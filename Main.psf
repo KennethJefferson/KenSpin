@@ -150,6 +150,9 @@ AS6yhhUPFAAA</Form>
 $formKenSpin_Load={
 	#TODO: Initialize Form Controls here
 	Set-ControlTheme $formKenSpin -Theme Dark
+
+	# Wire up the Generate button click event
+	$btnGenerate.Add_Click($btnGenerate_Click)
 }
 
 $darkToolStripMenuItem_Click={
