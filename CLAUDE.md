@@ -12,42 +12,57 @@ This repository contains article spinning / spintax engines for generating text 
 ## KenSpin (PowerShell GUI)
 
 ### Overview
-Windows Forms-based article spinner with dark/light theme support and unlimited nested spintax.
+Windows Forms-based article spinner with dark/light theme support and unlimited nested spintax. **Now powered by gospin binary** for 100% algorithm compatibility.
+
+### Architecture
+KenSpin shells out to `gospin.exe` for all spintax processing, ensuring identical behavior to the Go CLI tool. The PowerShell GUI handles:
+- User interface (input/output textboxes, Generate button)
+- Theme switching (dark/light mode)
+- Calling gospin.exe with appropriate arguments
+- Parallel batch processing for large generation counts
 
 ### Files
 - `Main.psf` - PowerShell Studio project file (edit this directly)
 - `Main.Export.ps1` - Exported PS1 for reference (auto-generated)
 - `architecture.md` - Algorithm documentation and complexity analysis
+- `gospin/gospin.exe` - **Required** Go binary (must be built first)
 
-### Running
-Open `Main.psf` in PowerShell Studio 2025 and run, or execute the exported `Main.Export.ps1`.
+### Building & Running
+
+**Step 1: Build gospin binary** (required)
+```bash
+cd gospin && go build -o gospin.exe ./cmd/gospin
+```
+
+**Step 2: Run KenSpin**
+- Open `Main.psf` in PowerShell Studio 2025 and run, OR
+- Execute the exported `Main.Export.ps1`
 
 ### Core Functions (in Main.psf)
 
-**Test-SpintaxBalance** - Stack-based brace validation
-```powershell
-Test-SpintaxBalance -Text "{hello|world}"  # Returns $true
-Test-SpintaxBalance -Text "{hello|world"   # Returns $false (unbalanced)
-```
-
-**Spin-Text** - Process spintax and return random variation
+**Spin-Text** - Process spintax via gospin.exe
 ```powershell
 Spin-Text -Text "{hello|hey} {world|everyone}"
+# Calls: gospin.exe "{hello|hey} {world|everyone}"
 # Returns one of: "hello world", "hello everyone", "hey world", "hey everyone"
 ```
 
-**Spin-TextParallel** - Generate multiple variations concurrently
+**Spin-TextParallel** - Generate multiple variations
 ```powershell
-Spin-TextParallel -Text "{a|b}" -Count 10 -MaxWorkers 4
-# Returns array of 10 variations using 4 parallel workers
+# Small batches (≤100): Uses gospin --times flag
+Spin-TextParallel -Text "{a|b}" -Count 10
+# Calls: gospin.exe "{a|b}" --times=10
+
+# Large batches (>100): Spawns parallel gospin processes
+Spin-TextParallel -Text "{a|b}" -Count 500 -MaxWorkers 4
+# Spawns 4 parallel gospin.exe processes
 ```
 
-### Algorithm
-- **Phase 1**: Stack-based validation (O(n) scan)
-- **Phase 2**: Multi-pass innermost-first regex resolution
-- **Complexity**: O(m × d) time, O(m + d) space (m=length, d=nesting depth)
-
-See `architecture.md` for detailed algorithm explanation and Kevin's CFG/concurrency theory.
+### Why Shell to gospin?
+- **100% compatibility** - Identical algorithm behavior guaranteed
+- **Performance** - Go binary is faster than PowerShell interpretation
+- **Maintainability** - Single source of truth for spintax logic
+- **Proven** - gospin is battle-tested with comprehensive test suite
 
 ---
 

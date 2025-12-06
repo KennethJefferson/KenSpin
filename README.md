@@ -21,7 +21,7 @@ This template can generate 9 unique combinations like "Hello world!", "Hey every
 
 ## KenSpin (PowerShell GUI)
 
-Windows Forms application with dark/light theme support.
+Windows Forms application with dark/light theme support. **Powered by gospin binary** for 100% algorithm compatibility.
 
 ### Screenshot
 
@@ -49,9 +49,18 @@ Windows Forms application with dark/light theme support.
 
 - Windows 10/11
 - PowerShell 5.1+ or PowerShell 7+
-- [PowerShell Studio 2025](https://www.sapien.com/software/powershell_studio) (for editing .psf files)
+- Go 1.19+ (to build gospin.exe)
+- [PowerShell Studio 2025](https://www.sapien.com/software/powershell_studio) (optional, for editing .psf files)
 
-### Running
+### Setup
+
+**Step 1: Build the gospin binary** (required)
+```bash
+cd gospin
+go build -o gospin.exe ./cmd/gospin
+```
+
+**Step 2: Run KenSpin**
 
 **Option 1**: Open `Main.psf` in PowerShell Studio and click Run
 
@@ -66,6 +75,15 @@ Windows Forms application with dark/light theme support.
 2. Click **Generate**
 3. View the randomly generated result in the bottom textbox
 4. Click Generate again for a different variation
+
+### How It Works
+
+KenSpin calls `gospin.exe` under the hood for all spintax processing:
+- Single generation: `gospin.exe "{spintax}"`
+- Batch generation: `gospin.exe "{spintax}" --times=N`
+- Large batches (>100): Parallel gospin processes across CPU cores
+
+This ensures 100% compatibility with the proven Go implementation.
 
 ## gospin (Go CLI)
 
@@ -103,14 +121,16 @@ go test ./...
 
 ## Algorithm
 
-Both implementations use a two-phase approach:
+The gospin algorithm (used by both CLI and GUI) uses a character-by-character recursive descent approach:
 
-1. **Validation**: Stack-based brace matching (O(n))
-2. **Resolution**: Multi-pass innermost-first regex replacement (O(m × d))
+1. **Walk** the string character by character
+2. When hitting `{`, **recursively walk** to find matching `}`
+3. Once complete block found, **select random option** from pipe-delimited choices
+4. For nested braces, **replace in-place** and adjust position counter
 
-Where m = string length and d = maximum nesting depth.
+**Complexity**: O(n) time, O(d) space where n = string length, d = max nesting depth
 
-See [architecture.md](architecture.md) for detailed algorithm documentation including complexity analysis and theoretical foundations.
+See [architecture.md](architecture.md) for detailed algorithm documentation including complexity analysis and Kevin's CFG/concurrency theory discussion.
 
 ## Project Structure
 
@@ -124,6 +144,7 @@ ArticleSpinner/
 ├── Mynotes.md            # Kevin's CFG/concurrency discussion notes
 └── gospin/               # Go implementation
     ├── gospin.go         # Core library
+    ├── gospin.exe        # Compiled binary (build required)
     ├── gospin_test.go    # Tests
     └── cmd/gospin/       # CLI entry point
         └── main.go
