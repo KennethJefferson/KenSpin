@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"$text = Get-Content ''E:\\Workspace.Dev.Go\\ArticleSpinner\\test_spintax.txt'' -Raw; $open = ([regex]::Matches($text, ''\\{'')).Count; $close = ([regex]::Matches($text, ''\\}'')).Count; Write-Host ''Open braces:'' $open; Write-Host ''Close braces:'' $close; Write-Host ''Difference:'' ($open - $close)\")",
+      "Bash(cat:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -167,102 +167,162 @@ $lightToolStripMenuItem_Click={
 #region Spintax Engine Functions
 <#
 	.SYNOPSIS
-		Validates that spintax braces are balanced.
+		Spintax engine ported directly from gospin (Go implementation).
 
 	.DESCRIPTION
-		Uses a stack-based counter to verify that every opening brace
-		has a corresponding closing brace. This is the first step in
-		parsing any Context-Free Grammar (per Kevin's discussion on
-		why regex alone cannot handle arbitrary nesting).
+		This is a direct port of the gospin algorithm which uses a
+		character-by-character walk with recursive descent parsing.
 
-	.PARAMETER Text
-		The spintax string to validate.
+		The algorithm:
+		1. Walks the string character by character
+		2. When hitting '{', recursively walks to find matching '}'
+		3. Once complete block found, selects random option
+		4. For nested braces, replaces in-place and adjusts position
 
-	.OUTPUTS
-		[bool] $true if balanced, $false otherwise.
+		Time Complexity: O(n) where n = string length
+		Space Complexity: O(d) where d = max nesting depth (recursion stack)
 #>
-function Test-SpintaxBalance
+
+# Script-level variables to simulate Go's pointer/reference semantics
+$script:SpinSeq = ""
+$script:SpinStr = ""
+$script:StartChar = "{"
+$script:EndChar = "}"
+$script:DelimiterChar = "|"
+$script:EscapeChar = "\"
+
+<#
+	.SYNOPSIS
+		Selects a random option from a spintax block (e.g., "{a|b|c}" -> "a", "b", or "c")
+
+	.DESCRIPTION
+		Direct port of gospin's selectOpt function. Handles escaped delimiters.
+#>
+function Select-SpinOption
 {
-	param (
-		[Parameter(Mandatory = $true)]
-		[string]$Text
-	)
+	param ([string]$strs)
 
-	$stack = 0
-	$escaped = $false
+	# Remove surrounding braces
+	$strs = $strs.Substring(1, $strs.Length - 2)
 
-	foreach ($char in $Text.ToCharArray())
+	# Split by delimiter
+	$split = $strs -split [regex]::Escape($script:DelimiterChar)
+
+	$str = ""
+	$opts = @()
+
+	foreach ($i in $split)
 	{
-		if ($escaped)
+		if (-not $i.EndsWith($script:EscapeChar))
 		{
-			$escaped = $false
-			continue
+			$opts += ($str + $i)
+			$str = ""
 		}
-		if ($char -eq '\')
+		else
 		{
-			$escaped = $true
-			continue
+			$str = $str + $i
 		}
-		if ($char -eq '{') { $stack++ }
-		elseif ($char -eq '}') { $stack-- }
-		if ($stack -lt 0) { return $false }
 	}
-	return ($stack -eq 0)
+
+	if ($opts.Count -eq 0) { return "" }
+
+	return $opts[(Get-Random -Maximum $opts.Count)]
 }
 
 <#
 	.SYNOPSIS
-		Randomly selects one option from a pipe-delimited string.
+		Recursive walk function - direct port of gospin's walk()
 
 	.DESCRIPTION
-		Splits the input by the pipe character and returns one
-		randomly selected element. Handles empty options (e.g., "word|"
-		can return empty string).
-
-	.PARAMETER Options
-		A pipe-delimited string of options (e.g., "fox|bear|cat").
-
-	.OUTPUTS
-		[string] One randomly selected option.
+		Walks character by character, handling nesting via recursion.
+		Returns $true to continue walking, $false to stop.
 #>
-function Select-RandomOption
+function Invoke-SpinWalk
 {
 	param (
-		[Parameter(Mandatory = $true)]
-		[string]$Options
+		[ref]$Step,
+		[int]$Start,
+		[int]$Level
 	)
 
-	$parts = $Options -split '\|'
-	return $parts[(Get-Random -Maximum $parts.Count)]
+	if ($Step.Value -ge $script:SpinStr.Length)
+	{
+		return $false
+	}
+
+	$char = $script:SpinStr[$Step.Value]
+	$prevCharNotEscape = ($Step.Value -eq 0) -or ($script:SpinStr[$Step.Value - 1] -ne $script:EscapeChar)
+
+	if ($char -eq $script:StartChar -and $prevCharNotEscape)
+	{
+		$Start = $Step.Value
+		$running = $true
+		$Level++
+
+		while ($running)
+		{
+			$Start++
+			$running = Invoke-SpinWalk -Step ([ref]$Start) -Start 0 -Level $Level
+		}
+
+		$blockText = $script:SpinStr.Substring($Step.Value, $Start - $Step.Value + 1)
+		$selected = Select-SpinOption -strs $blockText
+
+		if ($Level -eq 1)
+		{
+			if ($selected -ne "")
+			{
+				$script:SpinSeq += $selected
+			}
+		}
+		else
+		{
+			# Replace the spintax block in-place and adjust step counter
+			$originalLength = $blockText.Length
+			$newLength = $selected.Length
+			$stepDiff = $originalLength - $newLength
+
+			$script:SpinStr = $script:SpinStr.Substring(0, $Step.Value) + $selected + $script:SpinStr.Substring($Start + 1)
+
+			$Step.Value = $Step.Value - $stepDiff
+			$Start = $Start - $stepDiff
+		}
+
+		$Step.Value = $Start
+	}
+	elseif ($char -eq $script:EndChar -and $prevCharNotEscape)
+	{
+		if ($Level -eq 0)
+		{
+			throw "Brackets aren't matching"
+		}
+		return $false
+	}
+	elseif ($Level -eq 0)
+	{
+		$script:SpinSeq += $char
+	}
+
+	return $true
 }
 
 <#
 	.SYNOPSIS
-		Processes a spintax string and returns one random variation.
-
-	.DESCRIPTION
-		Implements a multi-pass recursive descent parser that resolves
-		spintax from the innermost braces outward. Uses regex to find
-		innermost {options} groups (those containing no nested braces),
-		replaces them with a random selection, and repeats until no
-		braces remain.
-
-		Time Complexity: O(m * d) where m = string length, d = max nesting depth
-		Space Complexity: O(m + d) for string buffer and implicit recursion
+		Main spin function - direct port of gospin's Spin()
 
 	.PARAMETER Text
-		The spintax string to process (e.g., "{hello|hey} {world|}").
+		The spintax string to process.
 
 	.OUTPUTS
-		[string] A randomly generated variation of the input.
+		[string] A randomly generated variation.
 
 	.EXAMPLE
 		Spin-Text -Text "{hello|hey} world"
-		# Returns either "hello world" or "hey world"
+		# Returns "hello world" or "hey world"
 
 	.EXAMPLE
-		Spin-Text -Text "{a|{b|c}}"
-		# Returns "a", "b", or "c"
+		Spin-Text -Text "{L1|{L2|{L3|L4}}}"
+		# Returns "L1", "L2", "L3", or "L4" with equal probability at each decision point
 #>
 function Spin-Text
 {
@@ -271,25 +331,20 @@ function Spin-Text
 		[string]$Text
 	)
 
-	# Phase 1: Stack-based validation (per Kevin's CFG discussion)
-	if (-not (Test-SpintaxBalance -Text $Text))
+	# Initialize script-level variables
+	$script:SpinSeq = ""
+	$script:SpinStr = $Text
+
+	$running = $true
+	$step = 0
+
+	while ($running)
 	{
-		throw "Unbalanced braces in spintax input"
+		$running = Invoke-SpinWalk -Step ([ref]$step) -Start 0 -Level 0
+		$step++
 	}
 
-	# Phase 2: Multi-pass innermost-first resolution
-	# Regex pattern matches innermost braces (no { or } inside)
-	$pattern = '\{([^{}]+)\}'
-
-	while ($Text -match $pattern)
-	{
-		$Text = [regex]::Replace($Text, $pattern, {
-			param ($m)
-			Select-RandomOption -Options $m.Groups[1].Value
-		})
-	}
-
-	return $Text
+	return $script:SpinSeq
 }
 
 <#
@@ -298,9 +353,8 @@ function Spin-Text
 
 	.DESCRIPTION
 		Uses PowerShell Runspace Pool for concurrent generation of
-		multiple text variations. Implements the worker pool pattern
-		discussed by Kevin to avoid fork-bombing with unconstrained
-		thread spawning.
+		multiple text variations. Each worker contains a complete copy
+		of the gospin algorithm for isolation.
 
 	.PARAMETER Text
 		The spintax string to process.
@@ -326,33 +380,87 @@ function Spin-TextParallel
 	# Single generation doesn't need parallelism
 	if ($Count -eq 1) { return @(Spin-Text -Text $Text) }
 
-	# Validate before spawning workers
-	if (-not (Test-SpintaxBalance -Text $Text))
-	{
-		throw "Unbalanced braces in spintax input"
-	}
-
 	# Create runspace pool with bounded workers (prevents fork bomb)
 	$pool = [runspacefactory]::CreateRunspacePool(1, $MaxWorkers)
 	$pool.Open()
 	$jobs = @()
 
-	# Script block for each worker (self-contained for isolation)
+	# Script block for each worker - complete gospin algorithm for isolation
 	$spinScript = {
 		param ($InputText)
 
-		$pattern = '\{([^{}]+)\}'
-		$result = $InputText
+		$StartChar = "{"
+		$EndChar = "}"
+		$DelimiterChar = "|"
+		$EscapeChar = "\"
+		$SpinSeq = ""
+		$SpinStr = $InputText
 
-		while ($result -match $pattern)
-		{
-			$result = [regex]::Replace($result, $pattern, {
-				param ($m)
-				$parts = $m.Groups[1].Value -split '\|'
-				$parts[(Get-Random -Maximum $parts.Count)]
-			})
+		function Select-SpinOptionInner {
+			param ([string]$strs, [string]$Delim, [string]$Esc)
+			$strs = $strs.Substring(1, $strs.Length - 2)
+			$split = $strs -split [regex]::Escape($Delim)
+			$str = ""
+			$opts = @()
+			foreach ($i in $split) {
+				if (-not $i.EndsWith($Esc)) {
+					$opts += ($str + $i)
+					$str = ""
+				} else {
+					$str = $str + $i
+				}
+			}
+			if ($opts.Count -eq 0) { return "" }
+			return $opts[(Get-Random -Maximum $opts.Count)]
 		}
-		return $result
+
+		function Invoke-SpinWalkInner {
+			param ([ref]$Step, [int]$Start, [int]$Level, [ref]$Seq, [ref]$Str, [string]$SC, [string]$EC, [string]$Esc)
+
+			if ($Step.Value -ge $Str.Value.Length) { return $false }
+
+			$char = $Str.Value[$Step.Value]
+			$prevCharNotEscape = ($Step.Value -eq 0) -or ($Str.Value[$Step.Value - 1] -ne $Esc)
+
+			if ($char -eq $SC -and $prevCharNotEscape) {
+				$Start = $Step.Value
+				$running = $true
+				$Level++
+				while ($running) {
+					$Start++
+					$running = Invoke-SpinWalkInner -Step ([ref]$Start) -Start 0 -Level $Level -Seq $Seq -Str $Str -SC $SC -EC $EC -Esc $Esc
+				}
+				$blockText = $Str.Value.Substring($Step.Value, $Start - $Step.Value + 1)
+				$selected = Select-SpinOptionInner -strs $blockText -Delim "|" -Esc $Esc
+				if ($Level -eq 1) {
+					if ($selected -ne "") { $Seq.Value += $selected }
+				} else {
+					$originalLength = $blockText.Length
+					$newLength = $selected.Length
+					$stepDiff = $originalLength - $newLength
+					$Str.Value = $Str.Value.Substring(0, $Step.Value) + $selected + $Str.Value.Substring($Start + 1)
+					$Step.Value = $Step.Value - $stepDiff
+					$Start = $Start - $stepDiff
+				}
+				$Step.Value = $Start
+			}
+			elseif ($char -eq $EC -and $prevCharNotEscape) {
+				if ($Level -eq 0) { throw "Brackets aren't matching" }
+				return $false
+			}
+			elseif ($Level -eq 0) {
+				$Seq.Value += $char
+			}
+			return $true
+		}
+
+		$running = $true
+		$step = 0
+		while ($running) {
+			$running = Invoke-SpinWalkInner -Step ([ref]$step) -Start 0 -Level 0 -Seq ([ref]$SpinSeq) -Str ([ref]$SpinStr) -SC $StartChar -EC $EndChar -Esc $EscapeChar
+			$step++
+		}
+		return $SpinSeq
 	}
 
 	# Spawn workers
