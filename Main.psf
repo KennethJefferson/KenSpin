@@ -167,148 +167,34 @@ $lightToolStripMenuItem_Click={
 #region Spintax Engine Functions
 <#
 	.SYNOPSIS
-		Spintax engine ported directly from gospin (Go implementation).
+		Spintax engine that calls the gospin binary directly.
 
 	.DESCRIPTION
-		This is a direct port of the gospin algorithm which uses a
-		character-by-character walk with recursive descent parsing.
+		Shells out to the gospin.exe binary for spintax processing.
+		This ensures 100% compatibility with the original Go implementation.
 
-		The algorithm:
-		1. Walks the string character by character
-		2. When hitting '{', recursively walks to find matching '}'
-		3. Once complete block found, selects random option
-		4. For nested braces, replaces in-place and adjusts position
-
-		Time Complexity: O(n) where n = string length
-		Space Complexity: O(d) where d = max nesting depth (recursion stack)
+		The gospin binary must be located in the 'gospin' subdirectory
+		relative to this script, or in the PATH.
 #>
 
-# Script-level variables to simulate Go's pointer/reference semantics
-$script:SpinSeq = ""
-$script:SpinStr = ""
-$script:StartChar = "{"
-$script:EndChar = "}"
-$script:DelimiterChar = "|"
-$script:EscapeChar = "\"
+# Path to gospin binary (relative to script location or absolute)
+$script:GospinPath = Join-Path $PSScriptRoot "gospin\gospin.exe"
 
-<#
-	.SYNOPSIS
-		Selects a random option from a spintax block (e.g., "{a|b|c}" -> "a", "b", or "c")
-
-	.DESCRIPTION
-		Direct port of gospin's selectOpt function. Handles escaped delimiters.
-#>
-function Select-SpinOption
+# Fallback: check if in same directory as script
+if (-not (Test-Path $script:GospinPath))
 {
-	param ([string]$strs)
+	$script:GospinPath = Join-Path (Split-Path -Parent $PSCommandPath) "gospin\gospin.exe"
+}
 
-	# Remove surrounding braces
-	$strs = $strs.Substring(1, $strs.Length - 2)
-
-	# Split by delimiter
-	$split = $strs -split [regex]::Escape($script:DelimiterChar)
-
-	$str = ""
-	$opts = @()
-
-	foreach ($i in $split)
-	{
-		if (-not $i.EndsWith($script:EscapeChar))
-		{
-			$opts += ($str + $i)
-			$str = ""
-		}
-		else
-		{
-			$str = $str + $i
-		}
-	}
-
-	if ($opts.Count -eq 0) { return "" }
-
-	return $opts[(Get-Random -Maximum $opts.Count)]
+# Fallback: check ArticleSpinner directory
+if (-not (Test-Path $script:GospinPath))
+{
+	$script:GospinPath = "E:\Workspace.Dev.Go\ArticleSpinner\gospin\gospin.exe"
 }
 
 <#
 	.SYNOPSIS
-		Recursive walk function - direct port of gospin's walk()
-
-	.DESCRIPTION
-		Walks character by character, handling nesting via recursion.
-		Returns $true to continue walking, $false to stop.
-#>
-function Invoke-SpinWalk
-{
-	param (
-		[ref]$Step,
-		[int]$Start,
-		[int]$Level
-	)
-
-	if ($Step.Value -ge $script:SpinStr.Length)
-	{
-		return $false
-	}
-
-	$char = $script:SpinStr[$Step.Value]
-	$prevCharNotEscape = ($Step.Value -eq 0) -or ($script:SpinStr[$Step.Value - 1] -ne $script:EscapeChar)
-
-	if ($char -eq $script:StartChar -and $prevCharNotEscape)
-	{
-		$Start = $Step.Value
-		$running = $true
-		$Level++
-
-		while ($running)
-		{
-			$Start++
-			$running = Invoke-SpinWalk -Step ([ref]$Start) -Start 0 -Level $Level
-		}
-
-		$blockText = $script:SpinStr.Substring($Step.Value, $Start - $Step.Value + 1)
-		$selected = Select-SpinOption -strs $blockText
-
-		if ($Level -eq 1)
-		{
-			if ($selected -ne "")
-			{
-				$script:SpinSeq += $selected
-			}
-		}
-		else
-		{
-			# Replace the spintax block in-place and adjust step counter
-			$originalLength = $blockText.Length
-			$newLength = $selected.Length
-			$stepDiff = $originalLength - $newLength
-
-			$script:SpinStr = $script:SpinStr.Substring(0, $Step.Value) + $selected + $script:SpinStr.Substring($Start + 1)
-
-			$Step.Value = $Step.Value - $stepDiff
-			$Start = $Start - $stepDiff
-		}
-
-		$Step.Value = $Start
-	}
-	elseif ($char -eq $script:EndChar -and $prevCharNotEscape)
-	{
-		if ($Level -eq 0)
-		{
-			throw "Brackets aren't matching"
-		}
-		return $false
-	}
-	elseif ($Level -eq 0)
-	{
-		$script:SpinSeq += $char
-	}
-
-	return $true
-}
-
-<#
-	.SYNOPSIS
-		Main spin function - direct port of gospin's Spin()
+		Processes spintax using the gospin binary.
 
 	.PARAMETER Text
 		The spintax string to process.
@@ -319,10 +205,6 @@ function Invoke-SpinWalk
 	.EXAMPLE
 		Spin-Text -Text "{hello|hey} world"
 		# Returns "hello world" or "hey world"
-
-	.EXAMPLE
-		Spin-Text -Text "{L1|{L2|{L3|L4}}}"
-		# Returns "L1", "L2", "L3", or "L4" with equal probability at each decision point
 #>
 function Spin-Text
 {
@@ -331,30 +213,29 @@ function Spin-Text
 		[string]$Text
 	)
 
-	# Initialize script-level variables
-	$script:SpinSeq = ""
-	$script:SpinStr = $Text
-
-	$running = $true
-	$step = 0
-
-	while ($running)
+	if (-not (Test-Path $script:GospinPath))
 	{
-		$running = Invoke-SpinWalk -Step ([ref]$step) -Start 0 -Level 0
-		$step++
+		throw "gospin.exe not found at: $script:GospinPath"
 	}
 
-	return $script:SpinSeq
+	# Call gospin with the text as argument
+	$result = & $script:GospinPath $Text 2>&1
+
+	if ($LASTEXITCODE -ne 0)
+	{
+		throw "gospin error: $result"
+	}
+
+	return $result
 }
 
 <#
 	.SYNOPSIS
-		Generates multiple spintax variations using parallel processing.
+		Generates multiple spintax variations using gospin with --times flag.
 
 	.DESCRIPTION
-		Uses PowerShell Runspace Pool for concurrent generation of
-		multiple text variations. Each worker contains a complete copy
-		of the gospin algorithm for isolation.
+		Calls gospin with --times=N for efficient batch generation.
+		For parallel processing, spawns multiple gospin processes.
 
 	.PARAMETER Text
 		The spintax string to process.
@@ -363,7 +244,8 @@ function Spin-Text
 		Number of variations to generate. Default is 1.
 
 	.PARAMETER MaxWorkers
-		Maximum concurrent workers. Defaults to processor count.
+		Maximum concurrent gospin processes. Defaults to processor count.
+		Only used when Count > 100 for parallel batch processing.
 
 	.OUTPUTS
 		[string[]] Array of generated variations.
@@ -377,110 +259,57 @@ function Spin-TextParallel
 		[int]$MaxWorkers = [Environment]::ProcessorCount
 	)
 
-	# Single generation doesn't need parallelism
-	if ($Count -eq 1) { return @(Spin-Text -Text $Text) }
+	if (-not (Test-Path $script:GospinPath))
+	{
+		throw "gospin.exe not found at: $script:GospinPath"
+	}
 
-	# Create runspace pool with bounded workers (prevents fork bomb)
-	$pool = [runspacefactory]::CreateRunspacePool(1, $MaxWorkers)
-	$pool.Open()
+	# Single generation
+	if ($Count -eq 1)
+	{
+		return @(Spin-Text -Text $Text)
+	}
+
+	# For small counts, use gospin's built-in --times flag (most efficient)
+	if ($Count -le 100)
+	{
+		$result = & $script:GospinPath $Text "--times=$Count" 2>&1
+
+		if ($LASTEXITCODE -ne 0)
+		{
+			throw "gospin error: $result"
+		}
+
+		# Parse JSON array result
+		return ($result | ConvertFrom-Json)
+	}
+
+	# For large counts, parallelize multiple gospin calls
+	$batchSize = [Math]::Ceiling($Count / $MaxWorkers)
 	$jobs = @()
 
-	# Script block for each worker - complete gospin algorithm for isolation
-	$spinScript = {
-		param ($InputText)
-
-		$StartChar = "{"
-		$EndChar = "}"
-		$DelimiterChar = "|"
-		$EscapeChar = "\"
-		$SpinSeq = ""
-		$SpinStr = $InputText
-
-		function Select-SpinOptionInner {
-			param ([string]$strs, [string]$Delim, [string]$Esc)
-			$strs = $strs.Substring(1, $strs.Length - 2)
-			$split = $strs -split [regex]::Escape($Delim)
-			$str = ""
-			$opts = @()
-			foreach ($i in $split) {
-				if (-not $i.EndsWith($Esc)) {
-					$opts += ($str + $i)
-					$str = ""
-				} else {
-					$str = $str + $i
-				}
-			}
-			if ($opts.Count -eq 0) { return "" }
-			return $opts[(Get-Random -Maximum $opts.Count)]
-		}
-
-		function Invoke-SpinWalkInner {
-			param ([ref]$Step, [int]$Start, [int]$Level, [ref]$Seq, [ref]$Str, [string]$SC, [string]$EC, [string]$Esc)
-
-			if ($Step.Value -ge $Str.Value.Length) { return $false }
-
-			$char = $Str.Value[$Step.Value]
-			$prevCharNotEscape = ($Step.Value -eq 0) -or ($Str.Value[$Step.Value - 1] -ne $Esc)
-
-			if ($char -eq $SC -and $prevCharNotEscape) {
-				$Start = $Step.Value
-				$running = $true
-				$Level++
-				while ($running) {
-					$Start++
-					$running = Invoke-SpinWalkInner -Step ([ref]$Start) -Start 0 -Level $Level -Seq $Seq -Str $Str -SC $SC -EC $EC -Esc $Esc
-				}
-				$blockText = $Str.Value.Substring($Step.Value, $Start - $Step.Value + 1)
-				$selected = Select-SpinOptionInner -strs $blockText -Delim "|" -Esc $Esc
-				if ($Level -eq 1) {
-					if ($selected -ne "") { $Seq.Value += $selected }
-				} else {
-					$originalLength = $blockText.Length
-					$newLength = $selected.Length
-					$stepDiff = $originalLength - $newLength
-					$Str.Value = $Str.Value.Substring(0, $Step.Value) + $selected + $Str.Value.Substring($Start + 1)
-					$Step.Value = $Step.Value - $stepDiff
-					$Start = $Start - $stepDiff
-				}
-				$Step.Value = $Start
-			}
-			elseif ($char -eq $EC -and $prevCharNotEscape) {
-				if ($Level -eq 0) { throw "Brackets aren't matching" }
-				return $false
-			}
-			elseif ($Level -eq 0) {
-				$Seq.Value += $char
-			}
-			return $true
-		}
-
-		$running = $true
-		$step = 0
-		while ($running) {
-			$running = Invoke-SpinWalkInner -Step ([ref]$step) -Start 0 -Level 0 -Seq ([ref]$SpinSeq) -Str ([ref]$SpinStr) -SC $StartChar -EC $EndChar -Esc $EscapeChar
-			$step++
-		}
-		return $SpinSeq
-	}
-
-	# Spawn workers
-	for ($i = 0; $i -lt $Count; $i++)
+	for ($i = 0; $i -lt $MaxWorkers; $i++)
 	{
-		$ps = [powershell]::Create()
-		$ps.RunspacePool = $pool
-		[void]$ps.AddScript($spinScript).AddArgument($Text)
-		$jobs += @{ Pipe = $ps; Handle = $ps.BeginInvoke() }
+		$thisCount = [Math]::Min($batchSize, $Count - ($i * $batchSize))
+		if ($thisCount -le 0) { break }
+
+		$job = Start-Job -ScriptBlock {
+			param ($GospinPath, $SpinText, $Times)
+			$result = & $GospinPath $SpinText "--times=$Times" 2>&1
+			if ($LASTEXITCODE -ne 0) { throw "gospin error: $result" }
+			return ($result | ConvertFrom-Json)
+		} -ArgumentList $script:GospinPath, $Text, $thisCount
+
+		$jobs += $job
 	}
 
-	# Collect results (DFS-style: complete each job before moving on)
-	$results = foreach ($job in $jobs)
+	# Collect results
+	$results = @()
+	foreach ($job in $jobs)
 	{
-		$job.Pipe.EndInvoke($job.Handle)
-		$job.Pipe.Dispose()
+		$results += (Receive-Job -Job $job -Wait)
+		Remove-Job -Job $job
 	}
-
-	$pool.Close()
-	$pool.Dispose()
 
 	return $results
 }
