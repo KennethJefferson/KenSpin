@@ -1,0 +1,477 @@
+﻿<File version="3.2">
+  <FileID>1acb6ec0-a037-43da-9496-5aef8e04e72a</FileID>
+  <Preview>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
+ZAAAQIIMAABIkAEAAAkyAAAgQQYAACTIAACABBkAAJAgAwAAEmQAAECCDAAASJABAAAJMgAAIEEG
+AAAkyAAAgAQZAACQIAMAABJkAABAggwAAEiQAQAACTIAACBBBgAAJMgAAIAEGQAAkCADAAASZAAA
+QIIMAABIkAEAAAkyAAAgQQYAACTIAACABBkAAJAgAwAAEmQAAECCDAAASNCODIDBwXPFXwcAUKKV
+1bVyB8D8/Hy0tXfFwsJSLC5ekiRJO9DI6ET09g3ExsbG9g+AW509NxL9/UP5lwIkSVL59fUPxszs
+bKyurpY3ALKXGyRJ0s61sbF+2/Hf9gEgSZJ+OzMAJElKMANAkqQEMwAkSUowA0CSpATb1gGQ/fsA
+JEnSzla8z9s6AG590oWFBUmStEMtLS2V99cAs0+UfdI333wz9u7dGwcOHJAkSTvQrl274vTp07G5
+uVnOAJiYmMg/MQCwc0ZHR6OysjKuXbtWzgA4f/58HD58uPjrAABKNDY2FlVVVXH16lUDAABSYQAA
+QIIMAABIkAEAAAkyAAAgQQYAACTIAACABBkAAJAgAwAAEmQAAECCDAAASJABAAAJMgAAIEEGAAAk
+yAAAgAQZAACQIAMAABJkAABAggwAAEiQAQAACTIAACBBBgAAJMgAAIAEGQAAkCADAAASZAAAQIIM
+AABIkAEAAAkyAAAgQQYAACTIAACABBkAAJAgAwAAEmQAAECCDAAASJABAAAJMgAAIEEGAAAkyAAA
+gAQZAACQIAMAABJkAABAggwAAEiQAQAACTIAACBBBgAAJMgAAIAEGQAAkCADAAASZAAAQIIMAABI
+kAEAAAkyAAAgQQYAACTIAACABBkAAJAgAwAAEmQAAECCDAAASJABAAAJMgAAIEEGAAAkyAAAgAQZ
+AACQIAMAABJkAABAggwAAEiQAQAACTIAACBBBgAAJMgAAIAEGQAAkCADAAASZAAAQIIMAABIkAEA
+AAkyAAAgQQYAACTIAACABBkAAJAgAwAAEmQAAECCDAAASJABAAAJMgAAIEEGAAAkyAAAgAQZAACQ
+IAMAABJkAABAggwAAEiQAQAACTIAACBBBgAAJMgAAIAEGQAAkCADAAASZAAAQIIMAABIkAEAAAky
+AAAgQQYAACTIAACABBkAAJAgAwAAEmQAAECCDAAASJABAAAJMgAAIEEGAAAkyAAAgAQZAACQIAMA
+ABJkAABAggwAAEiQAQAACTIAACBBBgAAJMgAAIAEGQAAkCADAAASZAAAQIIMAABIUOkDYGJiIioq
+Koq/DgCgRNkAqKysLG8AXLx4MV5//fXYt29fPgQkSVL5vfbaa9HQ0BCbm5vbPwCyVlZW4tKlSzE3
+Nxfz8/OSJGkHyp6QZ0/Mf/lGb+sAuDUCJEnSzla8z9s+AKSUu/UfuuyVMN1Zv/znJml7MwCkbSg7
+YouLi/nfhpmamtIdlv15ZV82NAKk7c8AkLapycnJWF9fj5s3b8aNGzf0MWV/TteuXcv/3BYWFowA
+aZszAKRtKHs5O3tG6/h/sjLZNyx5FUDa/gwAaRu6NQCKB06/PgNAKi8DQNqGDIC7ywCQyssAkLYh
+A+DuMgCk8jIApG3IALi7DACpvAwAaRvaqQFwy82bt7/tXsgAkMrLAJC2oZ0YAJkrq0sxN7+Q/3Px
+7XfSB/Phtp8vKwNAKi8DQNqGyh4AmYXhxnj8f/1jPP7wY7GnvueDY/7JTI9PxKX193/pZ8odAxkD
+QConA0DahkodADcj4vpy7HrqqeiZXo+NS/PRPzYb6/N98e6ePdE7ORsddVXx0gs/i9bh5Vi/0BVv
+7zsQQ9OzceLokaiqOhnVFXujsrYx/v6B/xEvH+2LhfHmeHP/4Zhcu17qv8vAAJDKywCQtqFSB0B2
+NTcn4sdPvRFX4noc2PVk/O/vPxWPfO1L8Rf//b/FX3/5q/HgNx6Pin2748nv/zj+4W++GH/xV1/M
+f/4b3/yn6OxuiSf/4avxuf/8xXjga9+Lyqqq+Pu/+nz8ly/8ZTzy4tGt1wGKn3ObMgCk8jIApG2o
+1AGQvQRw82ocffXp2Hu8M0bba+Mbf/PN+OYDD8bLb+6O119+Nh575mBc25yNHz/8UHztS1+J195+
+J1557sfx/Lu10bx/dzz50NPx3b/7Tnz5u09GzZED8d0HHozX33wrDh7vyl8BMACk+y8DQNqGyh0A
+2b9HP+L6+ky8/vQT8cQzL8Te6s6YHGiMp556OqpaOqO5ZSA21uejpaU/znXUxI+eeT6Ot3VGe89I
+LI0Px2s/ejKeevW9OHrkvag+0RZ9TRXxxE9eiu7pNV8CkO7TDABpGyp7AGR9nGwk3I3i59nOMgaA
+VE4GgLQN7cQAuB8yAKTyMgCkbcgAuLsMAKm8DABpGzIA7i4DQCovA0DahgyAu8sAkMrLAJC2IQPg
+7jIApPIyAKRt6NYAKPOv0N0PZRYWFgwAqYQMAGmbOn/+fGxubuZHjTuTDaaZmZn8VQADQNreDABp
+G8qOV3bERkZG9AkaHh7OB4DjL21/BoC0TWVHbHFxMX85e35+Xh9T9ufkmb9UXgaAtI1lx0yfrOKf
+oaTtyQCQJCnBDABJkhLMAJAkKcF+IwNgYWk51la3PpgkSfrtb311OcbvdgAMTK3FwNRqjMyu5CtC
+kiTdG2XH/+z0av5E/q4HQP/kar4gJEnSvVN2/LM7fscD4LHHflCzciNifPFG/k6SJOnebe5KRFNb
+38cPgK9//VsNbV2DcbKxPV8MkiTp3q2prTfeee/Axw8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAuDf8X9PcmA/OuYkXAAAA
+AElFTkSuQmCC</Preview>
+  <Form>k+L1f0V/xRMAACODCAAAAAAABADVWFtv4joQfq/U/xDxWlQCJFwkQCLcCg2XJFzafVnlYhKXxKaOw+3XHxvo
+WbZQCEfLURekYMczmZnvmxk7lPrWG7BpWLm/E4TSbiLQ9RyUE8Y6pCB4nEDk4GX42MQk2F2Twqml
+pDAGJIQYlaVHkX+TQi3yaURAGYGIEtNPCoPI8qH9DNZDPAOobOXzpmzLuXQxKwGxUEwIyAyY5Sl7
+Xjoh2B70HcLkEjWMKMF+mNi6yRwdEDwHhK73CtWIYsM2fVCHAUDcCSaaSwrpbCn1IXpJtYsdkKg0
+maWLOjUfAkQNuGEKaVHMJ4Vc9rKlHrsmKtvYLsoa1CR0gENIWSyJSo2ZA8SwCQDoou4QrCgPhATH
+oo0Fe9JeTsWms/fnJx+XUtvVD9HLuaBElGJ082ywKGoBBIhJwbmcOAZCxba5w08S00lBzh9z9BVL
+BzZj6OwzIZdJClIhhvzQtNrIASumk48jviX0Cn9GIRjDMDJ9g659oJj2rIZ9TBKVIYmO9UupHdXx
+iecOKXh1c+bpivYjOo+4seuoVzBxWMHw8FkpwBVwDIhcPw54v7ImzfjMinEI7bIAoQ8R+ALir9Ls
+MMDYeVYsZJNCRi5el2i5v4v3NvovtH/i7rjP/lHqPny8MXPyH2CuC1BkUALnN+eO7b9RyC0NPRBc
+2bDbgekCvhmzWt0hlmGeZMQYeLVZTAdPZgL8ztlkxtjfQsKx4cK3g+bALeaYDqaAAWKDj2znQB15
+kxBSh9Gk+L1f0V/TxpjHcRDcpfXv9MVQG5iOw+hKVGTGFLPErnHqwcNLHhEPewjnYeziOzx0Za7c
+a6XYe+2/KJw4qR3W3u+TGA30/8u588n11WHYhy5iwTMIdOh6l0/CdTat4yX6VH7ftPiOSs8xyexs
+5X2uu78kLp+TFz+wizRvG/MBvQpEJllX4Fjp60vxueXiKvv0jJHXGLlspPBpVatVX/nvtJAqenyg
+tBxlOGpUq2prUEutPEXjd/2l0fQ393ds2F+wS50sFd9arQ2+qniiPvbEUaYYOE+OZwejqt1qzi2k
+RVYwFtt1LeoaUvpHw3ndWn4ed/RGc3R/12880Nks7LtvVU1TgxfbNDuFkSzOVNHSNq5KoS515GmN
+vFteuyCNrGYbgclKWjzrYjdybD9Updd2b2YWoMV8m6qtobXWht1RsaEpdPMeDShW3KqqyQrQennX
+/tHotR9els10biLbD9WJsTAkpdOjm/arivqhMtUXTy9aD+v3d+NBgKthO5qoxhTJXuHtJbc0+90X
+Q49ko9fQrdfcRl2qm3f1mczAxrUyABYLi9bCmGhLL4LOcKhJA+fpnUXMcVM6+khukFnHdd1yuZTa
+0xOT3P155mSjuPyiuu3HWdb5M8ft9ai57rr9rsee2mC+fz893THOIntSJSawaf7imjneUU9vW3Vm
+6fw7f43FOPvCpZ/bxcN/Ab4/HV80urN8nNa5CSHq6U30BCOnnTpLyccwrPwDZlXUacUTAAA=</Form>
+  <Code><![CDATA[
+$form1_Load={
+	#TODO: Initialize Form Controls here
+	Set-ControlTheme $form1 -Theme Dark
+}
+
+$darkToolStripMenuItem_Click={
+	#TODO: Place custom script here
+	Set-ControlTheme -Control $form1 -Theme Dark
+}
+
+$lightToolStripMenuItem_Click={
+	Set-ControlTheme -Control $form1 -Theme Light
+}
+
+#region Control Theme Helper Function
+<#
+	.SYNOPSIS
+		Applies a theme to the control and its children.
+	
+	.PARAMETER Control
+		The control to theme. Usually the form itself.
+	
+	.PARAMETER Theme
+		The color theme:
+		Light
+		Dark
+
+	.PARAMETER CustomColor
+		A hashtable that contains the color values.
+		Keys:
+		WindowColor
+		ContainerColor
+		BackColor
+		ForeColor
+		BorderColor
+		SelectionForeColor
+		SelectionBackColor
+		MenuSelectionColor
+	.EXAMPLE
+		PS C:\> Set-ControlTheme -Control $form1 -Theme Dark
+	
+	.EXAMPLE
+		PS C:\> Set-ControlTheme -Control $form1 -CustomColor @{ WindowColor = 'White'; ContainerBackColor = 'Gray'; BackColor... }
+	.NOTES
+		Created by SAPIEN Technologies, Inc.
+#>
+function Set-ControlTheme
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(Mandatory = $true)]
+		[ValidateNotNull()]
+		[System.ComponentModel.Component]$Control,
+		[ValidateSet('Light', 'Dark')]
+		[string]$Theme = 'Dark',
+		[System.Collections.Hashtable]$CustomColor
+	)
+	
+	$Font = [System.Drawing.Font]::New('Segoe UI', 9)
+	
+	#Initialize the colors
+	if ($Theme -eq 'Dark')
+	{
+		$WindowColor = [System.Drawing.Color]::FromArgb(32, 32, 32)
+		$ContainerColor = [System.Drawing.Color]::FromArgb(45, 45, 45)
+		$BackColor = [System.Drawing.Color]::FromArgb(32, 32, 32)
+		$ForeColor = [System.Drawing.Color]::White
+		$BorderColor = [System.Drawing.Color]::DimGray
+		$SelectionBackColor = [System.Drawing.SystemColors]::Highlight
+		$SelectionForeColor = [System.Drawing.Color]::White
+		$MenuSelectionColor = [System.Drawing.Color]::DimGray
+	}
+	else
+	{
+		$WindowColor = [System.Drawing.Color]::White
+		$ContainerColor = [System.Drawing.Color]::WhiteSmoke
+		$BackColor = [System.Drawing.Color]::Gainsboro
+		$ForeColor = [System.Drawing.Color]::Black
+		$BorderColor = [System.Drawing.Color]::DimGray
+		$SelectionBackColor = [System.Drawing.SystemColors]::Highlight
+		$SelectionForeColor = [System.Drawing.Color]::White
+		$MenuSelectionColor = [System.Drawing.Color]::LightSteelBlue
+	}
+	
+	if ($CustomColor)
+	{
+		#Check and Validate the custom colors:
+		$Color = $CustomColor.WindowColor -as [System.Drawing.Color]
+		if ($Color) { $WindowColor = $Color }
+		$Color = $CustomColor.ContainerColor -as [System.Drawing.Color]
+		if ($Color) { $ContainerColor = $Color }
+		$Color = $CustomColor.BackColor -as [System.Drawing.Color]
+		if ($Color) { $BackColor = $Color }
+		$Color = $CustomColor.ForeColor -as [System.Drawing.Color]
+		if ($Color) { $ForeColor = $Color }
+		$Color = $CustomColor.BorderColor -as [System.Drawing.Color]
+		if ($Color) { $BorderColor = $Color }
+		$Color = $CustomColor.SelectionBackColor -as [System.Drawing.Color]
+		if ($Color) { $SelectionBackColor = $Color }
+		$Color = $CustomColor.SelectionForeColor -as [System.Drawing.Color]
+		if ($Color) { $SelectionForeColor = $Color }
+		$Color = $CustomColor.MenuSelectionColor -as [System.Drawing.Color]
+		if ($Color) { $MenuSelectionColor = $Color }
+	}
+	
+	#Define the custom renderer for the menus
+	#region Add-Type definition
+	try
+	{
+		[SAPIENTypes.SAPIENColorTable] | Out-Null
+	}
+	catch
+	{
+		if ($PSVersionTable.PSVersion.Major -ge 7)
+		{
+			$Assemblies = 'System.Windows.Forms', 'System.Drawing', 'System.Drawing.Primitives'
+		}
+		else
+		{
+			$Assemblies = 'System.Windows.Forms', 'System.Drawing'
+		}
+		Add-Type -ReferencedAssemblies $Assemblies -TypeDefinition "
+using System;
+using System.Windows.Forms;
+using System.Drawing;
+namespace SAPIENTypes
+{
+    public class SAPIENColorTable : ProfessionalColorTable
+    {
+        Color ContainerBackColor;
+        Color BackColor;
+        Color BorderColor;
+		Color SelectBackColor;
+
+        public SAPIENColorTable(Color containerColor, Color backColor, Color borderColor, Color selectBackColor)
+        {
+            ContainerBackColor = containerColor;
+            BackColor = backColor;
+            BorderColor = borderColor;
+			SelectBackColor = selectBackColor;
+        } 
+		public override Color MenuStripGradientBegin { get { return ContainerBackColor; } }
+        public override Color MenuStripGradientEnd { get { return ContainerBackColor; } }
+        public override Color ToolStripBorder { get { return BorderColor; } }
+        public override Color MenuItemBorder { get { return SelectBackColor; } }
+        public override Color MenuItemSelected { get { return SelectBackColor; } }
+        public override Color SeparatorDark { get { return BorderColor; } }
+        public override Color ToolStripDropDownBackground { get { return BackColor; } }
+        public override Color MenuBorder { get { return BorderColor; } }
+        public override Color MenuItemSelectedGradientBegin { get { return SelectBackColor; } }
+        public override Color MenuItemSelectedGradientEnd { get { return SelectBackColor; } }      
+        public override Color MenuItemPressedGradientBegin { get { return ContainerBackColor; } }
+        public override Color MenuItemPressedGradientEnd { get { return ContainerBackColor; } }
+        public override Color MenuItemPressedGradientMiddle { get { return ContainerBackColor; } }
+        public override Color ImageMarginGradientBegin { get { return BackColor; } }
+        public override Color ImageMarginGradientEnd { get { return BackColor; } }
+        public override Color ImageMarginGradientMiddle { get { return BackColor; } }
+    }
+}"
+	}
+	#endregion
+	
+	$colorTable = New-Object SAPIENTypes.SAPIENColorTable -ArgumentList $ContainerColor, $BackColor, $BorderColor, $MenuSelectionColor
+	$render = New-Object System.Windows.Forms.ToolStripProfessionalRenderer -ArgumentList $colorTable
+	[System.Windows.Forms.ToolStripManager]::Renderer = $render
+	
+	#Set up our processing queue
+	$Queue = New-Object System.Collections.Generic.Queue[System.ComponentModel.Component]
+	$Queue.Enqueue($Control)
+	
+	Add-Type -AssemblyName System.Core
+	
+	#Only process the controls once.
+	$Processed = New-Object System.Collections.Generic.HashSet[System.ComponentModel.Component]
+	
+	#Apply the colors to the controls
+	while ($Queue.Count -gt 0)
+	{
+		$target = $Queue.Dequeue()
+		
+		#Skip controls we already processed
+		if ($Processed.Contains($target)) { continue }
+		$Processed.Add($target)
+		
+		#Set the text color
+		$target.ForeColor = $ForeColor
+		
+		#region Handle Controls
+		if ($target -is [System.Windows.Forms.Form])
+		{
+			#Set Font
+			$target.Font = $Font
+			$target.BackColor = $ContainerColor
+		}
+		elseif ($target -is [System.Windows.Forms.SplitContainer])
+		{
+			$target.BackColor = $BorderColor
+		}
+		elseif ($target -is [System.Windows.Forms.PropertyGrid])
+		{
+			$target.BackColor = $BorderColor
+			$target.ViewBackColor = $BackColor
+			$target.ViewForeColor = $ForeColor
+			$target.ViewBorderColor = $BorderColor
+			$target.CategoryForeColor = $ForeColor
+			$target.CategorySplitterColor = $ContainerColor
+			$target.HelpBackColor = $BackColor
+			$target.HelpForeColor = $ForeColor
+			$target.HelpBorderColor = $BorderColor
+			$target.CommandsBackColor = $BackColor
+			$target.CommandsBorderColor = $BorderColor
+			$target.CommandsForeColor = $ForeColor
+			$target.LineColor = $ContainerColor
+		}
+		elseif ($target -is [System.Windows.Forms.ContainerControl] -or
+			$target -is [System.Windows.Forms.Panel])
+		{
+			#Set the BackColor for the container
+			$target.BackColor = $ContainerColor
+			
+		}
+		elseif ($target -is [System.Windows.Forms.GroupBox])
+		{
+			$target.FlatStyle = 'Flat'
+		}
+		elseif ($target -is [System.Windows.Forms.Button])
+		{
+			$target.FlatStyle = 'Flat'
+			$target.FlatAppearance.BorderColor = $BorderColor
+			$target.BackColor = $BackColor
+		}
+		elseif ($target -is [System.Windows.Forms.CheckBox] -or
+			$target -is [System.Windows.Forms.RadioButton] -or
+			$target -is [System.Windows.Forms.Label])
+		{
+			#$target.FlatStyle = 'Flat'
+		}
+		elseif ($target -is [System.Windows.Forms.ComboBox])
+		{
+			$target.BackColor = $BackColor
+			$target.FlatStyle = 'Flat'
+		}
+		elseif ($target -is [System.Windows.Forms.TextBox])
+		{
+			$target.BorderStyle = 'FixedSingle'
+			$target.BackColor = $BackColor
+		}
+		elseif ($target -is [System.Windows.Forms.DataGridView])
+		{
+			$target.GridColor = $BorderColor
+			$target.BackgroundColor = $ContainerColor
+			$target.DefaultCellStyle.BackColor = $WindowColor
+			$target.DefaultCellStyle.SelectionBackColor = $SelectionBackColor
+			$target.DefaultCellStyle.SelectionForeColor = $SelectionForeColor
+			$target.ColumnHeadersDefaultCellStyle.BackColor = $ContainerColor
+			$target.ColumnHeadersDefaultCellStyle.ForeColor = $ForeColor
+			$target.EnableHeadersVisualStyles = $false
+			$target.ColumnHeadersBorderStyle = 'Single'
+			$target.RowHeadersBorderStyle = 'Single'
+			$target.RowHeadersDefaultCellStyle.BackColor = $ContainerColor
+			$target.RowHeadersDefaultCellStyle.ForeColor = $ForeColor
+			
+		}
+		elseif ($PSVersionTable.PSVersion.Major -le 5 -and $target -is [System.Windows.Forms.DataGrid])
+		{
+			$target.CaptionBackColor = $WindowColor
+			$target.CaptionForeColor = $ForeColor
+			$target.BackgroundColor = $ContainerColor
+			$target.BackColor = $WindowColor
+			$target.ForeColor = $ForeColor
+			$target.HeaderBackColor = $ContainerColor
+			$target.HeaderForeColor = $ForeColor
+			$target.FlatMode = $true
+			$target.BorderStyle = 'FixedSingle'
+			$target.GridLineColor = $BorderColor
+			$target.AlternatingBackColor = $ContainerColor
+			$target.SelectionBackColor = $SelectionBackColor
+			$target.SelectionForeColor = $SelectionForeColor
+		}
+		elseif ($target -is [System.Windows.Forms.ToolStrip])
+		{
+			
+			$target.BackColor = $BackColor
+			$target.Renderer = $render
+			
+			foreach ($item in $target.Items)
+			{
+				$Queue.Enqueue($item)
+			}
+		}
+		elseif ($target -is [System.Windows.Forms.ToolStripMenuItem] -or
+			$target -is [System.Windows.Forms.ToolStripDropDown] -or
+			$target -is [System.Windows.Forms.ToolStripDropDownItem])
+		{
+			$target.BackColor = $BackColor
+			foreach ($item in $target.DropDownItems)
+			{
+				$Queue.Enqueue($item)
+			}
+		}
+		elseif ($target -is [System.Windows.Forms.ListBox] -or
+			$target -is [System.Windows.Forms.ListView] -or
+			$target -is [System.Windows.Forms.TreeView])
+		{
+			$target.BackColor = $WindowColor
+		}
+		else
+		{
+			$target.BackColor = $BackColor
+		}
+		#endregion
+		
+		if ($target -is [System.Windows.Forms.Control])
+		{
+			#Queue all the child controls
+			foreach ($child in $target.Controls)
+			{
+				$Queue.Enqueue($child)
+			}
+			if ($target.ContextMenuStrip)
+			{
+				$Queue.Enqueue($target.ContextMenuStrip);
+			}
+		}
+	}
+}
+#endregion
+]]></Code>
+  <TV>0</TV>
+  <Mode>0</Mode>
+  <Assemblies />
+</File>
