@@ -34,7 +34,17 @@
       "Bash(git stash:*)",
       "Bash(./gospin_original.exe:*)",
       "Bash(./gospin.exe:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '[hello|world]')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{\"\"title\"\": \"\"[Foo|Bar]\"\", \"\"value\"\": [1|2|3]}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{\"\"prompt\"\": \"\"A [$realism:hyper|ultra]-realistic shot in a [$location:office|beach|home]\"\"}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{\n  \"\"title\"\": \"\"Test\"\",\n  \"\"nested\"\": {\n    \"\"color\"\": \"\"[$color:red|blue]\"\",\n    \"\"size\"\": \"\"[$size:small|large]\"\"\n  },\n  \"\"items\"\": [\"\"a\"\", \"\"b\"\"]\n}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{\n  \"\"title\"\": \"\"Test\"\",\n  \"\"items\"\": \\[\"\"a\"\", \"\"b\"\"\\]\n}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{\n  \"\"title\"\": \"\"Sensual Elegance\"\",\n  \"\"prompt\"\": \"\"A [$realism:hyper|ultra]-realistic shot in a [$location:office|house|beach]\"\",\n  \"\"parameters\"\": {\n    \"\"hair\"\": \"\"[$hair_color:Dark brown|Black|Silver] waves\"\",\n    \"\"outfit\"\": \"\"[$dress_color:black|white|red] [$dress_length:short|long] dress\"\"\n  }\n}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '[$hair_color:Dark brown|Black|Silver|Blonde|Light brown}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '[$color:red|blue and [$size]')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '[a|b}]')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{\"\"title\"\": \"\"Test\"\", \"\"prompt\"\": \"\"A [$color:red|blue] item\"\"}')"
     ],
     "deny": [],
     "ask": []

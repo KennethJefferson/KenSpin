@@ -7,17 +7,20 @@ A spintax/article spinning toolkit for generating text variations from templates
 Spintax (spin syntax) allows you to create multiple variations of text from a single template:
 
 ```
-{Hello|Hey|Hi} {world|everyone|there}!
+[Hello|Hey|Hi] [world|everyone|there]!
 ```
 
 This template can generate 9 unique combinations like "Hello world!", "Hey everyone!", "Hi there!", etc.
 
 ### Features
 
-- **Unlimited nesting**: `{a|{b|{c|d}}}` resolves correctly at any depth
-- **Empty options**: `{word|}` can output "word" or nothing
-- **Multiple groups**: `{a|b} {c|d}` processes each group independently
-- **Escape support**: Use `\{` and `\|` for literal characters
+- **Bracket notation**: Uses `[option|option]` syntax (JSON-friendly - won't conflict with `{}`)
+- **Variables**: `[$name:opt1|opt2]` defines a variable, `[$name]` references it for consistent values
+- **Unlimited nesting**: `[a|[b|[c|d]]]` resolves correctly at any depth
+- **Empty options**: `[word|]` can output "word" or nothing
+- **Multiple groups**: `[a|b] [c|d]` processes each group independently
+- **Escape support**: Use `\[` and `\|` for literal characters
+- **Input validation**: Helpful error messages for mismatched brackets and typos
 
 ## KenSpin (PowerShell GUI)
 
@@ -32,8 +35,8 @@ Windows Forms application with dark/light theme support. **Powered by gospin bin
 │ Theme ▼                                  │
 ├─────────────────────────────────────────┤
 │ ┌─────────────────────────────────────┐ │
-│ │ {The|A} {quick|slow} {fox|dog}      │ │
-│ │ {jumps|leaps} over the {lazy|}cat   │ │
+│ │ [The|A] [quick|slow] [fox|dog]      │ │
+│ │ [jumps|leaps] over the [lazy|]cat   │ │
 │ └─────────────────────────────────────┘ │
 │                                         │
 │            [ Generate ]                 │
@@ -79,8 +82,8 @@ go build -o gospin.exe ./cmd/gospin
 ### How It Works
 
 KenSpin calls `gospin.exe` under the hood for all spintax processing:
-- Single generation: `gospin.exe "{spintax}"`
-- Batch generation: `gospin.exe "{spintax}" --times=N`
+- Single generation: `gospin.exe "[spintax]"`
+- Batch generation: `gospin.exe "[spintax]" --times=N`
 - Large batches (>100): Parallel gospin processes across CPU cores
 
 This ensures 100% compatibility with the proven Go implementation.
@@ -100,15 +103,23 @@ go build -o gospin.exe ./cmd/gospin
 
 ```bash
 # Basic usage
-./gospin "{hello|hey} friend"
+./gospin "[hello|hey] friend"
 # Output: hey friend
 
 # Generate multiple variations
-./gospin "The {slow|quick} {fox|deer}" --times=5
+./gospin "The [slow|quick] [fox|deer]" --times=5
 # Output: ["The quick fox", "The slow deer", ...]
 
-# Custom syntax characters
-./gospin "[a;b;c]" --start="[" --end="]" --delimiter=";"
+# Variables (consistent values within a spin)
+./gospin "[$color:red|blue] dress with [$color] shoes"
+# Output: blue dress with blue shoes (same color both times)
+
+# JSON templates (curly braces preserved)
+./gospin '{"prompt": "A [$style:hyper|ultra]-realistic [$loc:beach|office]"}'
+# Output: {"prompt": "A hyper-realistic beach"}
+
+# Custom syntax characters (if you prefer curly braces)
+./gospin "{a;b;c}" --start="{" --end="}" --delimiter=";"
 # Output: b
 ```
 
@@ -123,10 +134,12 @@ go test ./...
 
 The gospin algorithm (used by both CLI and GUI) uses a character-by-character recursive descent approach:
 
-1. **Walk** the string character by character
-2. When hitting `{`, **recursively walk** to find matching `}`
-3. Once complete block found, **select random option** from pipe-delimited choices
-4. For nested braces, **replace in-place** and adjust position counter
+1. **Validate** input for mismatched brackets before processing
+2. **Walk** the string character by character
+3. When hitting `[`, **recursively walk** to find matching `]`
+4. Once complete block found, **select random option** from pipe-delimited choices
+5. For nested brackets, **replace in-place** and adjust position counter
+6. For variables (`$name`), store/retrieve from context for consistency
 
 **Complexity**: O(n) time, O(d) space where n = string length, d = max nesting depth
 
@@ -154,31 +167,45 @@ ArticleSpinner/
 
 ### Simple Selection
 ```
-Input:  {red|green|blue} car
+Input:  [red|green|blue] car
 Output: green car
 ```
 
 ### Nested Spintax
 ```
-Input:  {I {love|like}|{He|She} {loves|likes}} {cats|dogs}
+Input:  [I [love|like]|[He|She] [loves|likes]] [cats|dogs]
 Output: She likes cats
 ```
 
 ### Optional Content
 ```
-Input:  The {very |}quick fox
+Input:  The [very |]quick fox
 Output: The quick fox
    or:  The very quick fox
 ```
 
+### Variables (Consistent Values)
+```
+Input:  [$color:red|blue] dress with [$color] shoes and [$color] hat
+Output: blue dress with blue shoes and blue hat
+        (same color used for all three)
+```
+
+### JSON Templates
+```json
+Input:  {"style": "[$s:hyper|ultra]-realistic", "location": "[$loc:beach|office]"}
+Output: {"style": "ultra-realistic", "location": "office"}
+        (curly braces preserved, only brackets processed)
+```
+
 ### Complex Template
 ```
-Input:  {Dear|Hello} {friend|colleague},
+Input:  [Dear|Hello] [friend|colleague],
 
-{I hope this {message|email} finds you well.|Greetings!}
+[I hope this [message|email] finds you well.|Greetings!]
 
-{Best|Kind} regards,
-{John|Jane}
+[Best|Kind] regards,
+[John|Jane]
 
 Output: Hello colleague,
 
@@ -186,6 +213,24 @@ Greetings!
 
 Kind regards,
 Jane
+```
+
+## Error Handling
+
+gospin validates input and provides helpful error messages:
+
+```bash
+# Mismatched bracket (typed } instead of ])
+./gospin '[$color:red|blue}'
+# Error: variable 'color' has mismatched brackets - opened with '[' but found '}'
+
+# Unclosed bracket
+./gospin '[$color:red|blue'
+# Error: unclosed bracket '[' at position 0
+
+# Undefined variable reference
+./gospin 'Hello [$undefined]'
+# Error: undefined variable: undefined
 ```
 
 ## License
