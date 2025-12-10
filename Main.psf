@@ -171,8 +171,23 @@ $formKenSpin_Load={
 	#TODO: Initialize Form Controls here
 	Set-ControlTheme $formKenSpin -Theme Dark
 
+	# Initialize gospin path from config
+	$script:GospinPath = Get-GospinPath
+
 	# Wire up the Generate button click event
 	$btnGenerate.Add_Click($btnGenerate_Click)
+
+	# Wire up the Copy to Clipboard button click event
+	$btnCopyToClipboard.Add_Click($btnCopyToClipboard_Click)
+
+	# Wire up scroll zoom for textboxes
+	# MouseEnter handlers to focus the textbox (required for MouseWheel to fire)
+	$txtInputBox.Add_MouseEnter({ $txtInputBox.Focus() })
+	$txtOutputBox.Add_MouseEnter({ $txtOutputBox.Focus() })
+
+	# MouseWheel handlers for zoom
+	$txtInputBox.Add_MouseWheel($textBox_MouseWheel)
+	$txtOutputBox.Add_MouseWheel($textBox_MouseWheel)
 }
 
 $darkToolStripMenuItem_Click={
@@ -193,24 +208,42 @@ $lightToolStripMenuItem_Click={
 		Shells out to the gospin.exe binary for spintax processing.
 		This ensures 100% compatibility with the original Go implementation.
 
-		The gospin binary must be located in the 'gospin' subdirectory
-		relative to this script, or in the PATH.
+		The gospin binary path is read from config.json in the script directory.
 #>
 
-# Path to gospin binary (relative to script location or absolute)
-$script:GospinPath = Join-Path $PSScriptRoot "gospin\gospin.exe"
-
-# Fallback: check if in same directory as script
-if (-not (Test-Path $script:GospinPath))
+# Load gospin path from config.json
+function Get-GospinPath
 {
-	$script:GospinPath = Join-Path (Split-Path -Parent $PSCommandPath) "gospin\gospin.exe"
+	# Hard-coded config path as primary (most reliable in PowerShell Studio)
+	$configPath = "E:\Workspace.Dev.Powershell\ArticleSpinner\config.json"
+
+	if (Test-Path $configPath)
+	{
+		try
+		{
+			$config = Get-Content $configPath -Raw | ConvertFrom-Json
+			if ($config.gospinPath -and (Test-Path $config.gospinPath))
+			{
+				return $config.gospinPath
+			}
+			elseif ($config.gospinPath)
+			{
+				# Config exists but path doesn't - return it anyway for error message
+				return $config.gospinPath
+			}
+		}
+		catch
+		{
+			# JSON parse error - fall through to default
+		}
+	}
+
+	# Fallback to default path
+	return "E:\Workspace.Dev.Powershell\ArticleSpinner\gospin\gospin.exe"
 }
 
-# Fallback: check ArticleSpinner directory
-if (-not (Test-Path $script:GospinPath))
-{
-	$script:GospinPath = "E:\Workspace.Dev.Go\ArticleSpinner\gospin\gospin.exe"
-}
+# Initialize path (will be set in form load if this fails)
+$script:GospinPath = $null
 
 <#
 	.SYNOPSIS
@@ -361,6 +394,53 @@ $btnGenerate_Click = {
 	}
 }
 #endregion Generate Button Event Handler
+
+#region Copy to Clipboard Button Event Handler
+$btnCopyToClipboard_Click = {
+	if (-not [string]::IsNullOrWhiteSpace($txtOutputBox.Text))
+	{
+		[System.Windows.Forms.Clipboard]::SetText($txtOutputBox.Text)
+	}
+}
+#endregion Copy to Clipboard Button Event Handler
+
+#region Scroll Zoom Event Handler
+<#
+	.SYNOPSIS
+		Handles mouse wheel events to zoom text in/out.
+
+	.DESCRIPTION
+		Scroll up = zoom in (increase font size)
+		Scroll down = zoom out (decrease font size)
+		Font size clamped between 8pt and 72pt.
+#>
+$textBox_MouseWheel = {
+	param ($sender, $e)
+
+	# Get current font size
+	$currentSize = $sender.Font.Size
+
+	# Calculate new size based on scroll direction
+	# e.Delta > 0 = scroll up = zoom in
+	# e.Delta < 0 = scroll down = zoom out
+	$delta = if ($e.Delta -gt 0) { 2 } else { -2 }
+	$newSize = $currentSize + $delta
+
+	# Clamp to reasonable range (8pt to 72pt)
+	$newSize = [Math]::Max(8, [Math]::Min(72, $newSize))
+
+	# Only update if size actually changed
+	if ($newSize -ne $currentSize)
+	{
+		# Apply new font (preserve font family and style)
+		$sender.Font = New-Object System.Drawing.Font(
+			$sender.Font.FontFamily,
+			$newSize,
+			$sender.Font.Style
+		)
+	}
+}
+#endregion Scroll Zoom Event Handler
 
 #region Control Theme Helper Function
 <#
