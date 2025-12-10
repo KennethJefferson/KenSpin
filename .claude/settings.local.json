@@ -6,7 +6,22 @@
       "Bash(go build:*)",
       "Bash(\"E:/Workspace.Dev.Go/ArticleSpinner/gospin/gospin.exe\" \"{L1|{L2|{L3|{L4|L5}}}}\")",
       "Bash(\"E:/Workspace.Dev.Go/ArticleSpinner/gospin/gospin.exe\" \"{L1|{L2|{L3|{L4|L5}}}}\" --times=10)",
-      "Bash(\"E:/Workspace.Dev.Go/ArticleSpinner/gospin/gospin.exe\" \"{L1|{L2|{L3|{L4|L5}}}}\" --times=50)"
+      "Bash(\"E:/Workspace.Dev.Go/ArticleSpinner/gospin/gospin.exe\" \"{L1|{L2|{L3|{L4|L5}}}}\" --times=50)",
+      "WebFetch(domain:claude.ai)",
+      "WebSearch",
+      "Bash(go test:*)",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" \"{$color:red|blue} dress with {$color} shoes\")",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" \"{$color:red|blue} dress with {$color} shoes\" --times=5)",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" \"{hello|hi} world\")",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{\\$color:red|blue} dress with {\\$color} shoes')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{$color:red|blue} dress with {$color} shoes')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{$color:red|blue} dress with {$color} shoes' --times=5)",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{$speed:quick|{$emphasis:very |super }fast} fox {$speed} jumps' --times=10)",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" 'Hello {$undefined}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{$:a|b}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" '{$123bad:a|b}')",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" 'The {$speed:quick|{$speed_emphasis:very |super }fast} {brown|red} {fox|dog} {jumps|leaps} over the {lazy|sleeping} cat' --times=10)",
+      "Bash(\"E:\\Workspace.Dev.Powershell\\ArticleSpinner\\gospin\\gospin.exe\" 'The {slow|quick} {brown|blue and {red|yellow}} {fox|deer} {gracefully |}jumps over the {sleeping|lazy} dog' --times=5)"
     ],
     "deny": [],
     "ask": []
